@@ -17,6 +17,22 @@ pub mod mycalculatorapp {
         calculator.result = num1 + num2;
         Ok(())
     }
+    pub fn substract(ctx: Context<Substraction>, num1: i64, num2: i64) -> ProgramResult {
+        let calculator = &mut ctx.accounts.calculator;
+        calculator.result = num1 - num2;
+        Ok(())
+    }
+    pub fn multiplication(ctx: Context<Multiplication>, num1: i64, num2: i64) -> ProgramResult {
+        let calculator = &mut ctx.accounts.calculator;
+        calculator.result = num1*num2;
+        Ok(())
+    }
+    pub fn division(ctx: Context<Division>, num1: i64, num2: i64) -> ProgramResult {
+        let calculator = &mut ctx.accounts.calculator;
+        calculator.result = num1/num2;
+        calculator.remainder = num1%num2;
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -31,6 +47,23 @@ pub struct Create<'info>{
 #[derive(Accounts)]
 pub struct Addition<'info>{
     #[account(mut)]
+    pub calculator: Account<'info, Calculator>
+}
+
+#[derive(Accounts)]
+pub struct Substraction<'info>{
+    #[account[mut]]
+    pub calculator: Account<'info, Calculator>
+}
+
+#[derive(Accounts)]
+pub struct Multiplication<'info>{
+    #[account[mut]]
+    pub calculator: Account<'info, Calculator>
+}
+#[derive(Accounts)]
+pub struct Division<'info>{
+    #[account[mut]]
     pub calculator: Account<'info, Calculator>
 }
 
