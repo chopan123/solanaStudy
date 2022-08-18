@@ -51,12 +51,13 @@ const App = () => {
     const connection = new Connection(network, opts.preflightCommitment)
     const provider = getProvider()
     const program = new Program(idl, programID, provider)
-    Promise.all(await connection.getProgramAccounts(programID).map(
+    Promise.all((await connection.getProgramAccounts(programID)).map(
       async campaign => ({
-        ...(await program.account.campaign.fetch(campaign.publicKey)),
+        ...(await program.account.campaign.fetch(campaign.pubkey)),
         pubkey: campaign.pubkey,
-      })
-    )).then(campaigns => setCampaigns(campaigns))
+        })
+      )
+    ).then(campaigns => setCampaigns(campaigns))
   }
 
   const createCampaign = async () => {
@@ -90,6 +91,26 @@ const App = () => {
       setWalletAddress(response.publicKey.toString())
     }
   }
+
+  const donate = async publicKey => {
+    try {
+      const provider = getProvider()
+      const program = new Program(idl, programID, provider)
+
+      await program.rpc.donate(new BN(0.2*web3.LAMPORTS_PER_SOL),{
+        accounts: {
+          campaign: publicKey,
+          user:provider.wallet.publicKey,
+          systemProgram: SystemProgram.programId,
+        }
+      })
+      console.log("Donated some money to:", publicKey.toString())
+      getCampaigns();
+
+    } catch (error) {
+      console.error("error donating:", error)
+    }
+  }
   const renderConnectedContainer = () => (
     <>
       <button onClick={createCampaign}>create campaign</button>
@@ -101,6 +122,9 @@ const App = () => {
             <p> Balance: {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()} </p>
             <p>{campaign.name}</p>
             <p>{campaign.description}</p>
+            <button onClick={()=>donate(campaign.pubkey)}>
+              Click to Donate!
+            </button>
             <br />
           </>
         ))}
