@@ -1,0 +1,19 @@
+{
+    "name": "tutorialNFT",
+    "symbol": "tNFT",
+    "image": "2.png",
+    "properties": {
+        "files": [
+            {
+                "uri": "2.png",
+                "type": "image/png"
+            }
+        ],
+        "creators": [
+            {
+                "address": "GF9xKZKJeM6zKU31t8yJzyqQYBbfa9HbTBZi1zr6xrDF",
+                "share": 100
+            }
+        ]
+    }
+}
