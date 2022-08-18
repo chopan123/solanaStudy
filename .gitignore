@@ -1,6 +1,7 @@
 secret_*
 
 node_modules/
+metaplex/
 
 .anchor
 .DS_Store
