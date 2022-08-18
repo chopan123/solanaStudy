@@ -335,10 +335,10 @@ const CandyMachine = ({ walletAddress }) => {
     return [];
   };
 
-  return (
+  return ( candyMachine &&
     <div className="machine-container">
-      <p>Drop Date:</p>
-      <p>Items Minted:</p>
+      <p>Drop Date: {candyMachine.data.goLiveDate.toString()}</p>
+      <p>Items Minted: {candyMachine.itemsRedeemed.toNumber()}/{candyMachine.data.itemsAvailable.toNumber()}</p>
       <button className="cta-button mint-button" onClick={mintToken}>
         Mint NFT
       </button>
